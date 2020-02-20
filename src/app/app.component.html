@@ -12,7 +12,8 @@
 </form>
 <div class="refer">
 <ul *ngFor="let task of todoList;let i = index">
-    <li><input type="checkbox" (change)="completed(i)">{{task}}</li>
+    <li><input type="checkbox" (change)="completed(i)">
+     	{{task}}</li>
     <button type="button" (click)="remove(i)">DELETE</button>
   </ul>
 </div>
