@@ -1,14 +1,21 @@
 <h2>Todo List</h2>
-<form>
-  <input [(ngModel)]="tasktitle" type="text" placeholder="TaskTitle" name="tasktitle" required>
-  <input [(ngModel)]="taskPriority" type="checkbox" name="taskPriority">High priority
-  <button type="submit" (click)="add()">Add</button>
+<form >
+    <input [(ngModel)]="tasktitle" type="text" placeholder="TaskTitle" name="tasktitle">
+    
+    <input [(ngModel)]="taskPriority" type="checkbox" name="priority">high priority   
+    <button type="submit" (click)="add()">Add</button>  
+
+    <br>
+    <button type="button" (click)="clear()">Clear all</button>
+    <br>
+    <button type="button" (click)="clearComp()">Clear completed item</button>
+
 </form>
-<button type="button" (click)="clear()">Clear All</button>
-<button type="button" (click)="clearComp()">Clear Completed item</button>
+<div class="refer">
 <ul *ngFor="let print of todoList;let i = index">
-  <li> <input type="checkbox" (change)="completed(i)" [checked]="print.completed">
-    <span *ngIf="print.priority">&uarr;</span> 
-    {{print.task}}
-    <button type="button" (click)="remove(i)">Delete</button> </li>
-</ul>
+    <li><input type="checkbox" (change)="completed(i)" [checked]="print.completed"  >
+      <span *ngIf="print.priority">&uarr;</span>
+     	{{print.task}}</li>
+    <button type="button" (click)="remove(i)">DELETE</button>
+  </ul>
+</div>
