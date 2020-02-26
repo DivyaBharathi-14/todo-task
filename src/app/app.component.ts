@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
 
+interface todo{
+  task:String;
+  completed:boolean;
+  priority:boolean;
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,77 +12,62 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   tasktitle:string;
+  taskPriority:boolean;
   title = 'todopro1';
-  todoList:Array<string>=[];
-  List:Array<boolean>=[];
-  high:Array<Number>=[];
-   key1='todo'
-    key2='complete'
-    key3='priority'
-    index=0;
-    j=0;
-    //s='';
-   // a:Array<boolean>=[];
-    merge(i)
-    {
-     // console.log(s);
-     
-      this.add(this.tasktitle,2);
-      this.higH(i);
+  
+  todoList:Array<todo>=[];
+//  List:Array<boolean>=[];
+  //high:Array<Number>=[];
+   // index=0;
+    //j=0;
+    constructor(){
+      if(localStorage.getItem("STORE")){
+        this.todoList= JSON.parse(localStorage.getItem("STORE"));
+      }
+
     }
     
-   add(tasktitle,j) {
-     
-    // console.log(tasktitle);
-     this.List.push(false);
-     if(j==0)
-     {
-      this.todoList.push(tasktitle);
-     this.high.push(2);
-     }
-     else{
-      this.todoList.push("!!".concat(tasktitle));
-     
-     }
-     this.tasktitle=" ";
+   add() {
+      this.todoList.push({
+        task: this.tasktitle,
+        completed:false,
+        priority: this.taskPriority
+      });
+     this.tasktitle="";
+     this.taskPriority=false;
     this.reuse();
   }
-  higH(i)
+  higH()
   {
-    if(i==1)
-    this.high.push(1);
-    //console.log(this.high);
-    this.bsort();
-    this.reuse();
+    
   }
   completed(i)
   {
-    this.List[i]=!this.List[i];
+    //debugger;
+    this.todoList[i].completed=!this.todoList[i].completed;
     this.reuse();
   }
   remove(i)
   {
     //console.log("delete");
     this.todoList.splice(i,1);
-    this.List.splice(i,1);
     this.reuse();
   }
   clear()
   {
     
     this.todoList.splice(0,this.todoList.length);
+    localStorage.removeItem("STORE");
   }
   clearComp()
   {
    // debugger;
    // console.log(this.List.length)
-    for(let i=0;i<this.List.length;i++)
+    for(let i=0;i<this.todoList.length;i++)
     {
-    if(this.List[i]==true)
+    if(this.todoList[i].completed==true)
     {
     this.todoList.splice(i,1);
-    this.List.splice(i,1);
-    this.high.splice(i,1);
     this.reuse();
     i--;
     }
@@ -86,23 +76,17 @@ export class AppComponent {
   bsort() {
 //this.a = this.high.slice();
 //this.high=this.high.slice();
-    for (let i = 0; i < this.high.length; i++) {
-      for (let j = 0; j < this.high.length - 1; j++) {
-        if (this.high[j] > this.high[j + 1]) {
-        
-          [this.high[j], this.high[j + 1]] = [this.high[j + 1], this.high[j]];
-          [this.List[j], this.List[j + 1]] = [this.List[j + 1], this.List[j]];
+    for (let i = 0; i < this.todoList.length; i++) {
+      for (let j = 0; j < this.todoList.length - 1; j++) {
+        if (this.todoList[j].priority> this.todoList[j+1].priority) {
           [this.todoList[j], this.todoList[j + 1]] = [this.todoList[j + 1], this.todoList[j]];
         }
       }
     }
   }
   
-
   reuse()
   {
-    localStorage.setItem(this.key1,JSON.stringify(this.todoList));
-    localStorage.setItem(this.key2,JSON.stringify(this.List));
-    localStorage.setItem(this.key3,JSON.stringify(this.high));
+    localStorage.setItem("STORE",JSON.stringify(this.todoList));
   }
 }
